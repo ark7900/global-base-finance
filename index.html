@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Global Base Finance - Google Sheet Connected</title>
+<title>Global Base Finance V4 Enterprise</title>
 
 <style>
 :root{
@@ -14,101 +14,132 @@
 --gold:#d4af37;
 --txt:#f8fafc;
 --muted:#94a3b8;
+--green:#22c55e;
+--red:#ef4444;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,Arial,sans-serif;
+}
+
 body{
-background:linear-gradient(135deg,var(--bg),#111827,var(--bg2));
-color:#fff;min-height:100vh;
+background:linear-gradient(135deg,var(--bg),#0f172a,var(--bg2));
+color:var(--txt);
+min-height:100vh;
 }
 
 input,select,button{
-width:100%;padding:11px;border-radius:12px;
+font:inherit;
+}
+
+input,select{
+width:100%;
+padding:11px;
+border-radius:12px;
 border:1px solid var(--line);
-background:rgba(255,255,255,.05);
+background:rgba(255,255,255,.04);
 color:#fff;
-margin-top:8px;
+outline:none;
 }
 
 button{
 cursor:pointer;
+border:none;
+border-radius:12px;
+padding:10px 14px;
 font-weight:700;
-background:var(--gold);
-color:#111;
+}
+
+.gold{background:var(--gold);color:#111;}
+.dark{background:rgba(255,255,255,.06);color:#fff;}
+.red{background:#ef4444;color:#fff;}
+
+.small{
+font-size:12px;
+color:var(--muted);
+}
+
+.badge{
+padding:5px 10px;
+border-radius:999px;
+font-size:12px;
+font-weight:700;
+}
+
+.pending{
+background:#3a2c09;
+color:#ffe08a;
+}
+
+.done{
+background:#12351d;
+color:#9ef0b1;
 }
 
 .login{
-display:flex;
-justify-content:center;
-align-items:center;
 min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
 padding:20px;
 }
 
 .login-box{
-width:420px;
+width:430px;
 background:rgba(255,255,255,.05);
-padding:30px;
-border-radius:24px;
+backdrop-filter:blur(14px);
 border:1px solid var(--line);
-backdrop-filter:blur(12px);
+padding:34px;
+border-radius:24px;
 }
 
-.app{display:none}
+.app{display:none;}
 
 .sidebar{
 position:fixed;
-left:0;top:0;
-width:260px;height:100vh;
-padding:20px;
-background:rgba(255,255,255,.05);
+left:0;
+top:0;
+width:270px;
+height:100vh;
+background:rgba(255,255,255,.04);
+backdrop-filter:blur(14px);
 border-right:1px solid var(--line);
+padding:22px;
+overflow:auto;
 }
 
-.sidebar h2{margin-bottom:20px}
+.brand{
+font-size:28px;
+font-weight:800;
+margin-bottom:18px;
+}
+
+.brand span{color:var(--gold);}
+
 .sidebar button{
+width:100%;
 text-align:left;
 margin-bottom:10px;
+background:rgba(255,255,255,.04);
+color:#fff;
+}
+
+.sidebar button.active,
+.sidebar button:hover{
+background:var(--gold);
+color:#111;
 }
 
 .main{
-margin-left:260px;
+margin-left:270px;
 padding:28px;
 }
 
-.page{display:none}
-.page.active{display:block}
-
-.panel{
-background:rgba(255,255,255,.05);
-padding:20px;
-border-radius:22px;
-border:1px solid var(--line);
-margin-bottom:22px;
-}
-
-.top{
-display:flex;
-justify-content:space-between;
-gap:12px;
-flex-wrap:wrap;
-margin-bottom:16px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:12px;
-}
-
-th,td{
-padding:10px;
-border-bottom:1px solid var(--line);
-font-size:13px;
-text-align:left;
-}
-
-th{color:#94a3b8}
+.page{display:none;}
+.page.active{display:block;}
 
 .cards{
 display:grid;
@@ -117,34 +148,76 @@ gap:16px;
 }
 
 .card{
-background:rgba(255,255,255,.05);
+background:var(--card);
+border:1px solid var(--line);
 padding:18px;
 border-radius:20px;
-border:1px solid var(--line);
 }
 
-.card h4{color:#94a3b8}
-.card p{font-size:28px;font-weight:800;margin-top:10px}
+.card h4{
+color:var(--muted);
+margin-bottom:8px;
+}
+
+.card p{
+font-size:28px;
+font-weight:800;
+}
+
+.panel{
+margin-top:22px;
+background:var(--card);
+border:1px solid var(--line);
+padding:20px;
+border-radius:22px;
+overflow:auto;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+flex-wrap:wrap;
+margin-bottom:15px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid var(--line);
+text-align:left;
+font-size:13px;
+}
+
+th{
+color:var(--muted);
+}
 
 .modal{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.7);
+background:rgba(0,0,0,.72);
 display:none;
 justify-content:center;
 align-items:center;
-padding:20px;
+padding:18px;
+z-index:999;
 }
 
 .modal-box{
 width:100%;
 max-width:900px;
-background:#111827;
-padding:24px;
-border-radius:24px;
-border:1px solid var(--line);
 max-height:92vh;
 overflow:auto;
+background:#111827;
+border:1px solid var(--line);
+padding:24px;
+border-radius:24px;
 }
 
 .grid{
@@ -155,19 +228,9 @@ gap:12px;
 
 .actions{
 display:flex;
+justify-content:flex-end;
 gap:10px;
-margin-top:15px;
-}
-
-.dark{
-background:#374151;
-color:#fff;
-}
-
-.small{
-font-size:12px;
-color:#94a3b8;
-margin-top:8px;
+margin-top:16px;
 }
 
 @media(max-width:900px){
@@ -182,18 +245,23 @@ margin-left:0;
 }
 </style>
 </head>
+
 <body>
 
 <!-- LOGIN -->
 <div class="login" id="loginPage">
 <div class="login-box">
 <h1>Global Base <span style="color:#d4af37">Finance</span></h1>
-<div class="small">Google Sheet Connected • Made by ARK</div>
+<div class="small">Enterprise ERP</div>
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+<input id="email" placeholder="Email" style="margin-top:10px">
+<input id="password" type="password" placeholder="Password" style="margin-top:10px">
 
-<button onclick="login()">Login</button>
+<button class="gold" style="width:100%;margin-top:12px" onclick="login()">Login</button>
+
+<div class="small" style="margin-top:12px;text-align:center">
+Made by ARK
+</div>
 </div>
 </div>
 
@@ -201,13 +269,14 @@ margin-left:0;
 <div class="app" id="app">
 
 <div class="sidebar">
-<h2>GB Finance</h2>
+<div class="brand">GB <span>Finance</span></div>
 
-<button onclick="openPage('dashboard')">Dashboard</button>
-<button onclick="openPage('customer')">Customer Payment</button>
-<button onclick="openPage('vendor')">Vendor Payment</button>
-<button onclick="openPage('advance')">Vendor Advance</button>
-<button onclick="openPage('deposit')">Customer Deposit</button>
+<button class="active" onclick="openPage(event,'dashboard')">Dashboard</button>
+<button onclick="openPage(event,'customer')">Customer Payment</button>
+<button onclick="openPage(event,'vendor')">Vendor Payment</button>
+<button onclick="openPage(event,'advance')">Vendor Advance</button>
+<button onclick="openPage(event,'deposit')">Customer Deposit</button>
+<button onclick="backupData()">Backup</button>
 <button onclick="logout()">Logout</button>
 </div>
 
@@ -215,7 +284,9 @@ margin-left:0;
 
 <!-- DASHBOARD -->
 <div class="page active" id="dashboard">
-<div class="cards">
+<h1>Dashboard</h1>
+
+<div class="cards" style="margin-top:18px">
 <div class="card"><h4>Customer Due</h4><p id="d1">0</p></div>
 <div class="card"><h4>Vendor Payable</h4><p id="d2">0</p></div>
 <div class="card"><h4>Vendor Advance</h4><p id="d3">0</p></div>
@@ -228,13 +299,21 @@ margin-left:0;
 <div class="panel">
 <div class="top">
 <h2>Customer Payment</h2>
-<button onclick="openModal('mc')">+ Add</button>
+<button class="gold" onclick="openModal('mc')">+ Add</button>
 </div>
 
 <table>
 <thead>
 <tr>
-<th>Buyer</th><th>Vendor</th><th>PO</th><th>Due</th><th>Amt</th><th>Status</th>
+<th>Buyer</th>
+<th>Vendor</th>
+<th>PO</th>
+<th>ETD</th>
+<th>Doc</th>
+<th>Due</th>
+<th>Amt</th>
+<th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="customerBody"></tbody>
@@ -248,18 +327,22 @@ margin-left:0;
 <div class="panel">
 <div class="top">
 <h2>Vendor Payment</h2>
-<button onclick="openModal('mv')">+ Add</button>
+<button class="gold" onclick="openModal('mv')">+ Add</button>
 </div>
 
 <table>
 <thead>
 <tr>
-<th>Vendor</th><th>Description</th><th>Amt</th><th>Status</th>
+<th>Vendor</th>
+<th>Description</th>
+<th>Amt</th>
+<th>Stage</th>
+<th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="vendorBody"></tbody>
 </table>
-
 </div>
 </div>
 
@@ -268,18 +351,23 @@ margin-left:0;
 <div class="panel">
 <div class="top">
 <h2>Vendor Advance</h2>
-<button onclick="openModal('ma')">+ Add</button>
+<button class="gold" onclick="openModal('ma')">+ Add</button>
 </div>
 
 <table>
 <thead>
 <tr>
-<th>Vendor</th><th>PO</th><th>Total</th>
+<th>Vendor</th>
+<th>PO</th>
+<th>Date</th>
+<th>Total</th>
+<th>Used</th>
+<th>Bal</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="advanceBody"></tbody>
 </table>
-
 </div>
 </div>
 
@@ -288,18 +376,23 @@ margin-left:0;
 <div class="panel">
 <div class="top">
 <h2>Customer Deposit</h2>
-<button onclick="openModal('md')">+ Add</button>
+<button class="gold" onclick="openModal('md')">+ Add</button>
 </div>
 
 <table>
 <thead>
 <tr>
-<th>Customer</th><th>PO</th><th>Total</th>
+<th>Customer</th>
+<th>PO</th>
+<th>Date</th>
+<th>Total</th>
+<th>Used</th>
+<th>Bal</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="depositBody"></tbody>
 </table>
-
 </div>
 </div>
 
@@ -309,19 +402,20 @@ margin-left:0;
 <!-- CUSTOMER MODAL -->
 <div class="modal" id="mc">
 <div class="modal-box">
-<h2>Add Customer Payment</h2>
+<h2>Customer Payment</h2>
 
 <div class="grid">
 <input id="cbuyer" placeholder="Buyer">
 <input id="cvendor" placeholder="Vendor">
-<input id="cpo" placeholder="PO Number">
+<input id="cpo" placeholder="PO">
+<input type="date" id="cetd">
 <input type="date" id="cdoc">
 <input id="camt" placeholder="Amount">
 </div>
 
 <div class="actions">
 <button class="dark" onclick="closeModal('mc')">Close</button>
-<button onclick="saveCustomer()">Save</button>
+<button class="gold" onclick="saveCustomer()">Save</button>
 </div>
 </div>
 </div>
@@ -329,17 +423,26 @@ margin-left:0;
 <!-- VENDOR MODAL -->
 <div class="modal" id="mv">
 <div class="modal-box">
-<h2>Add Vendor Payment</h2>
+<h2>Vendor Payment</h2>
 
 <div class="grid">
 <input id="vvendor" placeholder="Vendor">
 <input id="vdesc" placeholder="Description">
 <input id="vamt" placeholder="Amount">
+
+<select id="vstage">
+<option>Hold By AMJ Sir</option>
+<option>Awaiting CA Sheet</option>
+<option>Awaiting Vendor Sheet</option>
+<option>Awaiting Signed Sheet</option>
+<option>Awaiting Voucher</option>
+<option>Awaiting TT Proof</option>
+</select>
 </div>
 
 <div class="actions">
 <button class="dark" onclick="closeModal('mv')">Close</button>
-<button onclick="saveVendor()">Save</button>
+<button class="gold" onclick="saveVendor()">Save</button>
 </div>
 </div>
 </div>
@@ -347,17 +450,18 @@ margin-left:0;
 <!-- ADVANCE MODAL -->
 <div class="modal" id="ma">
 <div class="modal-box">
-<h2>Add Vendor Advance</h2>
+<h2>Vendor Advance</h2>
 
 <div class="grid">
 <input id="avendor" placeholder="Vendor">
 <input id="apo" placeholder="PO">
+<input type="date" id="adate">
 <input id="atotal" placeholder="Amount">
 </div>
 
 <div class="actions">
 <button class="dark" onclick="closeModal('ma')">Close</button>
-<button onclick="saveAdvance()">Save</button>
+<button class="gold" onclick="saveAdvance()">Save</button>
 </div>
 </div>
 </div>
@@ -365,27 +469,40 @@ margin-left:0;
 <!-- DEPOSIT MODAL -->
 <div class="modal" id="md">
 <div class="modal-box">
-<h2>Add Customer Deposit</h2>
+<h2>Customer Deposit</h2>
 
 <div class="grid">
 <input id="dcust" placeholder="Customer">
 <input id="dpo" placeholder="PO">
+<input type="date" id="ddate">
 <input id="damt" placeholder="Amount">
 </div>
 
 <div class="actions">
 <button class="dark" onclick="closeModal('md')">Close</button>
-<button onclick="saveDeposit()">Save</button>
+<button class="gold" onclick="saveDeposit()">Save</button>
 </div>
 </div>
 </div>
 
 <script>
-
-/* IMPORTANT */
-const API_URL = "https://script.google.com/macros/s/AKfycbya95s6lkb2E2oB7WAnOrTOhG4YLk6XWQPeh9web4MN-7SUBJJ87hoxglDyR3udgDKnEg/exec";
-
 let c=[],v=[],a=[],d=[];
+
+/* STORAGE */
+function saveLocal(){
+localStorage.setItem("gb_finance_data",JSON.stringify({c,v,a,d}));
+}
+
+function loadLocal(){
+let data=localStorage.getItem("gb_finance_data");
+if(data){
+let x=JSON.parse(data);
+c=x.c||[];
+v=x.v||[];
+a=x.a||[];
+d=x.d||[];
+}
+}
 
 /* LOGIN */
 function login(){
@@ -395,208 +512,272 @@ if(
 ){
 loginPage.style.display="none";
 app.style.display="block";
-loadAll();
+
+loadLocal();
+renderAll();
+dash();
 }else{
 alert("Invalid Login");
 }
 }
 
-function logout(){location.reload();}
+function logout(){
+location.reload();
+}
 
 /* PAGE */
-function openPage(id){
-document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+function openPage(e,id){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 document.getElementById(id).classList.add("active");
+
+document.querySelectorAll(".sidebar button").forEach(b=>b.classList.remove("active"));
+e.target.classList.add("active");
 }
 
 /* MODAL */
 function openModal(id){
 document.getElementById(id).style.display="flex";
 }
+
 function closeModal(id){
 document.getElementById(id).style.display="none";
 }
 
-/* DAYS */
+/* RULE */
 function getDays(name){
-name=(name||"").toLowerCase();
+name=name.toLowerCase();
 if(name.includes("tjx")) return 120;
-if(name.includes("uic")) return 15;
-if(name.includes("schou")) return 15;
+if(name.includes("home")) return 120;
 return 15;
 }
 
-/* POST TO SHEET */
-async function send(sheet,row){
-await fetch(API_URL,{
-method:"POST",
-body:JSON.stringify({
-sheet:sheet,
-row:row
-})
-});
-}
-
-/* LOAD ALL */
-async function loadAll(){
-dash();
-}
-
 /* CUSTOMER */
-async function saveCustomer(){
+function saveCustomer(){
 
-let dt=new Date(cdoc.value);
-dt.setDate(dt.getDate()+getDays(cbuyer.value));
+let days=getDays(cbuyer.value);
+let dt=new Date(cdoc.value || new Date());
+dt.setDate(dt.getDate()+days);
+
 let due=dt.toISOString().split("T")[0];
-
-let row=[
-cbuyer.value,
-cvendor.value,
-cpo.value,
-cdoc.value,
-due,
-camt.value,
-"Pending"
-];
-
-await send("Customer",row);
 
 c.push({
 buyer:cbuyer.value,
 vendor:cvendor.value,
 po:cpo.value,
+etd:cetd.value,
+doc:cdoc.value,
 due:due,
-amt:Number(camt.value),
+amt:Number(camt.value||0),
 status:"Pending"
 });
 
+saveLocal();
 renderCustomer();
 dash();
 closeModal("mc");
 }
 
-/* VENDOR */
-async function saveVendor(){
-
-let row=[
-vvendor.value,
-vdesc.value,
-vamt.value,
-"Pending"
-];
-
-await send("Vendor",row);
-
-v.push({
-vendor:vvendor.value,
-desc:vdesc.value,
-amt:Number(vamt.value),
-status:"Pending"
-});
-
-renderVendor();
-dash();
-closeModal("mv");
-}
-
-/* ADVANCE */
-async function saveAdvance(){
-
-let row=[
-avendor.value,
-apo.value,
-atotal.value
-];
-
-await send("Advance",row);
-
-a.push({
-vendor:avendor.value,
-po:apo.value,
-bal:Number(atotal.value)
-});
-
-renderAdvance();
-dash();
-closeModal("ma");
-}
-
-/* DEPOSIT */
-async function saveDeposit(){
-
-let row=[
-dcust.value,
-dpo.value,
-damt.value
-];
-
-await send("Deposit",row);
-
-d.push({
-cust:dcust.value,
-po:dpo.value,
-bal:Number(damt.value)
-});
-
-renderDeposit();
-dash();
-closeModal("md");
-}
-
-/* RENDER */
 function renderCustomer(){
 customerBody.innerHTML="";
-c.forEach(x=>{
+
+c.forEach((x,i)=>{
+let cls=x.status==="Done"?"done":"pending";
+
 customerBody.innerHTML+=`
 <tr>
 <td>${x.buyer}</td>
 <td>${x.vendor}</td>
 <td>${x.po}</td>
+<td>${x.etd}</td>
+<td>${x.doc}</td>
 <td>${x.due}</td>
 <td>${x.amt}</td>
-<td>${x.status}</td>
+<td><span class="badge ${cls}">${x.status}</span></td>
+<td>
+<button class="gold" onclick="markReceived(${i})">Done</button>
+<button class="red" onclick="delC(${i})">Delete</button>
+</td>
 </tr>`;
 });
 }
 
+function markReceived(i){
+c[i].status="Done";
+saveLocal();
+renderCustomer();
+dash();
+}
+
+function delC(i){
+c.splice(i,1);
+saveLocal();
+renderCustomer();
+dash();
+}
+
+/* VENDOR */
+function saveVendor(){
+
+v.push({
+vendor:vvendor.value,
+desc:vdesc.value,
+amt:Number(vamt.value||0),
+stage:vstage.value,
+status:"Pending"
+});
+
+saveLocal();
+renderVendor();
+dash();
+closeModal("mv");
+}
+
 function renderVendor(){
 vendorBody.innerHTML="";
-v.forEach(x=>{
+
+v.forEach((x,i)=>{
+let cls=x.status==="Done"?"done":"pending";
+
 vendorBody.innerHTML+=`
 <tr>
 <td>${x.vendor}</td>
 <td>${x.desc}</td>
 <td>${x.amt}</td>
-<td>${x.status}</td>
+<td>${x.stage}</td>
+<td><span class="badge ${cls}">${x.status}</span></td>
+<td>
+<button class="gold" onclick="markPaid(${i})">Paid</button>
+<button class="red" onclick="delV(${i})">Delete</button>
+</td>
 </tr>`;
 });
+}
+
+function markPaid(i){
+v[i].status="Done";
+saveLocal();
+renderVendor();
+dash();
+}
+
+function delV(i){
+v.splice(i,1);
+saveLocal();
+renderVendor();
+dash();
+}
+
+/* ADVANCE */
+function saveAdvance(){
+
+a.push({
+vendor:avendor.value,
+po:apo.value,
+date:adate.value,
+total:Number(atotal.value||0),
+used:0,
+bal:Number(atotal.value||0)
+});
+
+saveLocal();
+renderAdvance();
+dash();
+closeModal("ma");
 }
 
 function renderAdvance(){
 advanceBody.innerHTML="";
-a.forEach(x=>{
+
+a.forEach((x,i)=>{
 advanceBody.innerHTML+=`
 <tr>
 <td>${x.vendor}</td>
 <td>${x.po}</td>
+<td>${x.date}</td>
+<td>${x.total}</td>
+<td>${x.used}</td>
 <td>${x.bal}</td>
+<td>
+<button class="gold" onclick="deductA(${i})">Deduct</button>
+<button class="red" onclick="delA(${i})">Delete</button>
+</td>
 </tr>`;
 });
+}
+
+function deductA(i){
+let m=Number(prompt("Deduct Amount")||0);
+a[i].used+=m;
+a[i].bal=a[i].total-a[i].used;
+
+saveLocal();
+renderAdvance();
+dash();
+}
+
+function delA(i){
+a.splice(i,1);
+saveLocal();
+renderAdvance();
+dash();
+}
+
+/* DEPOSIT */
+function saveDeposit(){
+
+d.push({
+cust:dcust.value,
+po:dpo.value,
+date:ddate.value,
+total:Number(damt.value||0),
+used:0,
+bal:Number(damt.value||0)
+});
+
+saveLocal();
+renderDeposit();
+dash();
+closeModal("md");
 }
 
 function renderDeposit(){
 depositBody.innerHTML="";
-d.forEach(x=>{
+
+d.forEach((x,i)=>{
 depositBody.innerHTML+=`
 <tr>
 <td>${x.cust}</td>
 <td>${x.po}</td>
+<td>${x.date}</td>
+<td>${x.total}</td>
+<td>${x.used}</td>
 <td>${x.bal}</td>
+<td>
+<button class="gold" onclick="adjD(${i})">Adjust</button>
+<button class="red" onclick="delD(${i})">Delete</button>
+</td>
 </tr>`;
 });
 }
 
-/* DASH */
+function adjD(i){
+let m=Number(prompt("Adjust Amount")||0);
+d[i].used+=m;
+d[i].bal=d[i].total-d[i].used;
+
+saveLocal();
+renderDeposit();
+dash();
+}
+
+function delD(i){
+d.splice(i,1);
+saveLocal();
+renderDeposit();
+dash();
+}
+
+/* DASHBOARD */
 function dash(){
 d1.innerText=c.filter(x=>x.status!="Done").reduce((s,x)=>s+x.amt,0);
 d2.innerText=v.filter(x=>x.status!="Done").reduce((s,x)=>s+x.amt,0);
@@ -604,6 +785,25 @@ d3.innerText=a.reduce((s,x)=>s+x.bal,0);
 d4.innerText=d.reduce((s,x)=>s+x.bal,0);
 }
 
+/* RENDER */
+function renderAll(){
+renderCustomer();
+renderVendor();
+renderAdvance();
+renderDeposit();
+}
+
+/* BACKUP */
+function backupData(){
+let txt=JSON.stringify({c,v,a,d},null,2);
+let blob=new Blob([txt],{type:"application/json"});
+let url=URL.createObjectURL(blob);
+
+let aTag=document.createElement("a");
+aTag.href=url;
+aTag.download="gb-finance-backup.json";
+aTag.click();
+}
 </script>
 
 </body>

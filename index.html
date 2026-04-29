@@ -276,7 +276,7 @@ Made by ARK
 <button onclick="openPage(event,'vendor')">Vendor Payment</button>
 <button onclick="openPage(event,'advance')">Vendor Advance</button>
 <button onclick="openPage(event,'deposit')">Customer Deposit</button>
-<button onclick="backupData()">Backup</button>
+<button onclick="backupExcel()">Backup Excel</button>
 <button onclick="logout()">Logout</button>
 </div>
 
@@ -301,24 +301,14 @@ Made by ARK
 <h2>Customer Payment</h2>
 <button class="gold" onclick="openModal('mc')">+ Add</button>
 </div>
-
 <table>
 <thead>
 <tr>
-<th>Buyer</th>
-<th>Vendor</th>
-<th>PO</th>
-<th>ETD</th>
-<th>Doc</th>
-<th>Due</th>
-<th>Amt</th>
-<th>Status</th>
-<th>Action</th>
+<th>Buyer</th><th>Vendor</th><th>PO</th><th>ETD</th><th>Doc</th><th>Due</th><th>Amt</th><th>Status</th><th>Action</th>
 </tr>
 </thead>
 <tbody id="customerBody"></tbody>
 </table>
-
 </div>
 </div>
 
@@ -329,16 +319,10 @@ Made by ARK
 <h2>Vendor Payment</h2>
 <button class="gold" onclick="openModal('mv')">+ Add</button>
 </div>
-
 <table>
 <thead>
 <tr>
-<th>Vendor</th>
-<th>Description</th>
-<th>Amt</th>
-<th>Stage</th>
-<th>Status</th>
-<th>Action</th>
+<th>Vendor</th><th>Description</th><th>Amt</th><th>Stage</th><th>Status</th><th>Action</th>
 </tr>
 </thead>
 <tbody id="vendorBody"></tbody>
@@ -353,17 +337,10 @@ Made by ARK
 <h2>Vendor Advance</h2>
 <button class="gold" onclick="openModal('ma')">+ Add</button>
 </div>
-
 <table>
 <thead>
 <tr>
-<th>Vendor</th>
-<th>PO</th>
-<th>Date</th>
-<th>Total</th>
-<th>Used</th>
-<th>Bal</th>
-<th>Action</th>
+<th>Vendor</th><th>PO</th><th>Date</th><th>Total</th><th>Used</th><th>Bal</th><th>Action</th>
 </tr>
 </thead>
 <tbody id="advanceBody"></tbody>
@@ -378,17 +355,10 @@ Made by ARK
 <h2>Customer Deposit</h2>
 <button class="gold" onclick="openModal('md')">+ Add</button>
 </div>
-
 <table>
 <thead>
 <tr>
-<th>Customer</th>
-<th>PO</th>
-<th>Date</th>
-<th>Total</th>
-<th>Used</th>
-<th>Bal</th>
-<th>Action</th>
+<th>Customer</th><th>PO</th><th>Date</th><th>Total</th><th>Used</th><th>Bal</th><th>Action</th>
 </tr>
 </thead>
 <tbody id="depositBody"></tbody>
@@ -399,11 +369,9 @@ Made by ARK
 </div>
 </div>
 
-<!-- CUSTOMER MODAL -->
-<div class="modal" id="mc">
-<div class="modal-box">
+<!-- MODALS -->
+<div class="modal" id="mc"><div class="modal-box">
 <h2>Customer Payment</h2>
-
 <div class="grid">
 <input id="cbuyer" placeholder="Buyer">
 <input id="cvendor" placeholder="Vendor">
@@ -412,87 +380,71 @@ Made by ARK
 <input type="date" id="cdoc">
 <input id="camt" placeholder="Amount">
 </div>
-
 <div class="actions">
 <button class="dark" onclick="closeModal('mc')">Close</button>
 <button class="gold" onclick="saveCustomer()">Save</button>
 </div>
-</div>
-</div>
+</div></div>
 
-<!-- VENDOR MODAL -->
-<div class="modal" id="mv">
-<div class="modal-box">
+<div class="modal" id="mv"><div class="modal-box">
 <h2>Vendor Payment</h2>
-
 <div class="grid">
 <input id="vvendor" placeholder="Vendor">
 <input id="vdesc" placeholder="Description">
 <input id="vamt" placeholder="Amount">
-
 <select id="vstage">
 <option>Hold By AMJ Sir</option>
-<option>Awaiting CA Sheet</option>
-<option>Awaiting Vendor Sheet</option>
-<option>Awaiting Signed Sheet</option>
-<option>Awaiting Voucher</option>
+<option>Awaiting For The Payment Sheet From CA</option>
+<option>Awaiting For The Payment Sheet From Vendor</option>
+<option>Awaiting Signed Payment Sheet</option>
+<option>Awaiting For The Payment Voucher From CA</option>
 <option>Awaiting TT Proof</option>
+<option>Done</option>
 </select>
 </div>
-
 <div class="actions">
 <button class="dark" onclick="closeModal('mv')">Close</button>
 <button class="gold" onclick="saveVendor()">Save</button>
 </div>
-</div>
-</div>
+</div></div>
 
-<!-- ADVANCE MODAL -->
-<div class="modal" id="ma">
-<div class="modal-box">
+<div class="modal" id="ma"><div class="modal-box">
 <h2>Vendor Advance</h2>
-
 <div class="grid">
 <input id="avendor" placeholder="Vendor">
 <input id="apo" placeholder="PO">
 <input type="date" id="adate">
 <input id="atotal" placeholder="Amount">
 </div>
-
 <div class="actions">
 <button class="dark" onclick="closeModal('ma')">Close</button>
 <button class="gold" onclick="saveAdvance()">Save</button>
 </div>
-</div>
-</div>
+</div></div>
 
-<!-- DEPOSIT MODAL -->
-<div class="modal" id="md">
-<div class="modal-box">
+<div class="modal" id="md"><div class="modal-box">
 <h2>Customer Deposit</h2>
-
 <div class="grid">
 <input id="dcust" placeholder="Customer">
 <input id="dpo" placeholder="PO">
 <input type="date" id="ddate">
 <input id="damt" placeholder="Amount">
 </div>
-
 <div class="actions">
 <button class="dark" onclick="closeModal('md')">Close</button>
 <button class="gold" onclick="saveDeposit()">Save</button>
 </div>
-</div>
-</div>
+</div></div>
 
 <script>
 let c=[],v=[],a=[],d=[];
 
-/* STORAGE */
+/* SAVE STORAGE */
 function saveLocal(){
 localStorage.setItem("gb_finance_data",JSON.stringify({c,v,a,d}));
 }
 
+/* LOAD STORAGE */
 function loadLocal(){
 let data=localStorage.getItem("gb_finance_data");
 if(data){
@@ -512,7 +464,6 @@ if(
 ){
 loginPage.style.display="none";
 app.style.display="block";
-
 loadLocal();
 renderAll();
 dash();
@@ -529,19 +480,13 @@ location.reload();
 function openPage(e,id){
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 document.getElementById(id).classList.add("active");
-
 document.querySelectorAll(".sidebar button").forEach(b=>b.classList.remove("active"));
 e.target.classList.add("active");
 }
 
 /* MODAL */
-function openModal(id){
-document.getElementById(id).style.display="flex";
-}
-
-function closeModal(id){
-document.getElementById(id).style.display="none";
-}
+function openModal(id){document.getElementById(id).style.display="flex";}
+function closeModal(id){document.getElementById(id).style.display="none";}
 
 /* RULE */
 function getDays(name){
@@ -553,11 +498,9 @@ return 15;
 
 /* CUSTOMER */
 function saveCustomer(){
-
 let days=getDays(cbuyer.value);
 let dt=new Date(cdoc.value || new Date());
 dt.setDate(dt.getDate()+days);
-
 let due=dt.toISOString().split("T")[0];
 
 c.push({
@@ -579,10 +522,8 @@ closeModal("mc");
 
 function renderCustomer(){
 customerBody.innerHTML="";
-
 c.forEach((x,i)=>{
 let cls=x.status==="Done"?"done":"pending";
-
 customerBody.innerHTML+=`
 <tr>
 <td>${x.buyer}</td>
@@ -601,23 +542,11 @@ customerBody.innerHTML+=`
 });
 }
 
-function markReceived(i){
-c[i].status="Done";
-saveLocal();
-renderCustomer();
-dash();
-}
-
-function delC(i){
-c.splice(i,1);
-saveLocal();
-renderCustomer();
-dash();
-}
+function markReceived(i){c[i].status="Done";saveLocal();renderCustomer();dash();}
+function delC(i){c.splice(i,1);saveLocal();renderCustomer();dash();}
 
 /* VENDOR */
 function saveVendor(){
-
 v.push({
 vendor:vvendor.value,
 desc:vdesc.value,
@@ -625,7 +554,6 @@ amt:Number(vamt.value||0),
 stage:vstage.value,
 status:"Pending"
 });
-
 saveLocal();
 renderVendor();
 dash();
@@ -634,10 +562,8 @@ closeModal("mv");
 
 function renderVendor(){
 vendorBody.innerHTML="";
-
 v.forEach((x,i)=>{
 let cls=x.status==="Done"?"done":"pending";
-
 vendorBody.innerHTML+=`
 <tr>
 <td>${x.vendor}</td>
@@ -653,23 +579,11 @@ vendorBody.innerHTML+=`
 });
 }
 
-function markPaid(i){
-v[i].status="Done";
-saveLocal();
-renderVendor();
-dash();
-}
-
-function delV(i){
-v.splice(i,1);
-saveLocal();
-renderVendor();
-dash();
-}
+function markPaid(i){v[i].status="Done";saveLocal();renderVendor();dash();}
+function delV(i){v.splice(i,1);saveLocal();renderVendor();dash();}
 
 /* ADVANCE */
 function saveAdvance(){
-
 a.push({
 vendor:avendor.value,
 po:apo.value,
@@ -678,7 +592,6 @@ total:Number(atotal.value||0),
 used:0,
 bal:Number(atotal.value||0)
 });
-
 saveLocal();
 renderAdvance();
 dash();
@@ -687,7 +600,6 @@ closeModal("ma");
 
 function renderAdvance(){
 advanceBody.innerHTML="";
-
 a.forEach((x,i)=>{
 advanceBody.innerHTML+=`
 <tr>
@@ -709,22 +621,15 @@ function deductA(i){
 let m=Number(prompt("Deduct Amount")||0);
 a[i].used+=m;
 a[i].bal=a[i].total-a[i].used;
-
 saveLocal();
 renderAdvance();
 dash();
 }
 
-function delA(i){
-a.splice(i,1);
-saveLocal();
-renderAdvance();
-dash();
-}
+function delA(i){a.splice(i,1);saveLocal();renderAdvance();dash();}
 
 /* DEPOSIT */
 function saveDeposit(){
-
 d.push({
 cust:dcust.value,
 po:dpo.value,
@@ -733,7 +638,6 @@ total:Number(damt.value||0),
 used:0,
 bal:Number(damt.value||0)
 });
-
 saveLocal();
 renderDeposit();
 dash();
@@ -742,7 +646,6 @@ closeModal("md");
 
 function renderDeposit(){
 depositBody.innerHTML="";
-
 d.forEach((x,i)=>{
 depositBody.innerHTML+=`
 <tr>
@@ -764,20 +667,14 @@ function adjD(i){
 let m=Number(prompt("Adjust Amount")||0);
 d[i].used+=m;
 d[i].bal=d[i].total-d[i].used;
-
 saveLocal();
 renderDeposit();
 dash();
 }
 
-function delD(i){
-d.splice(i,1);
-saveLocal();
-renderDeposit();
-dash();
-}
+function delD(i){d.splice(i,1);saveLocal();renderDeposit();dash();}
 
-/* DASHBOARD */
+/* DASH */
 function dash(){
 d1.innerText=c.filter(x=>x.status!="Done").reduce((s,x)=>s+x.amt,0);
 d2.innerText=v.filter(x=>x.status!="Done").reduce((s,x)=>s+x.amt,0);
@@ -785,7 +682,7 @@ d3.innerText=a.reduce((s,x)=>s+x.bal,0);
 d4.innerText=d.reduce((s,x)=>s+x.bal,0);
 }
 
-/* RENDER */
+/* RENDER ALL */
 function renderAll(){
 renderCustomer();
 renderVendor();
@@ -793,15 +690,26 @@ renderAdvance();
 renderDeposit();
 }
 
-/* BACKUP */
-function backupData(){
-let txt=JSON.stringify({c,v,a,d},null,2);
-let blob=new Blob([txt],{type:"application/json"});
-let url=URL.createObjectURL(blob);
+/* BACKUP EXCEL CSV */
+function backupExcel(){
+
+let rows = [
+["Type","Name1","Name2","PO","Date","Amount","Status"]
+];
+
+c.forEach(x=>rows.push(["Customer",x.buyer,x.vendor,x.po,x.doc,x.amt,x.status]));
+v.forEach(x=>rows.push(["Vendor",x.vendor,x.desc,"","",x.amt,x.status]));
+a.forEach(x=>rows.push(["Advance",x.vendor,"",x.po,x.date,x.bal,""]));
+d.forEach(x=>rows.push(["Deposit",x.cust,"",x.po,x.date,x.bal,""]));
+
+let csv = rows.map(r=>r.join(",")).join("\n");
+
+let blob = new Blob([csv],{type:"text/csv"});
+let url = URL.createObjectURL(blob);
 
 let aTag=document.createElement("a");
 aTag.href=url;
-aTag.download="gb-finance-backup.json";
+aTag.download="GB-Finance-Backup.csv";
 aTag.click();
 }
 </script>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Global Base Finance V4 Enterprise</title>
+<style>
+:root{
+--bg:#0b1020;--bg2:#111827;--card:rgba(255,255,255,.05);
+--line:rgba(255,255,255,.08);--gold:#d4af37;--txt:#f8fafc;
+--muted:#94a3b8;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
+body{
+background:linear-gradient(135deg,var(--bg),#0f172a,var(--bg2));
+color:var(--txt);min-height:100vh
+}
+input,select,button{font:inherit}
+input,select{
+width:100%;padding:11px;border-radius:12px;border:1px solid var(--line);
+background:rgba(255,255,255,.04);color:#fff;outline:none
+}
+button{
+cursor:pointer;border:none;border-radius:12px;
+padding:10px 14px;font-weight:700
+}
+.gold{background:var(--gold);color:#111}
+.dark{background:rgba(255,255,255,.06);color:#fff}
+.red{background:#ef4444;color:#fff}
+.small{font-size:12px;color:var(--muted)}
+.badge{padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.pending{background:#3a2c09;color:#ffe08a}
+.done{background:#12351d;color:#9ef0b1}
+.overdue{background:#3d1111;color:#ffb4b4}
+
+.login{
+min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px
+}
+.login-box{
+width:430px;background:rgba(255,255,255,.05);
+backdrop-filter:blur(14px);
+border:1px solid var(--line);padding:34px;border-radius:24px
+}
+
+.app{display:none}
+.sidebar{
+position:fixed;left:0;top:0;width:270px;height:100vh;
+background:rgba(255,255,255,.04);backdrop-filter:blur(14px);
+border-right:1px solid var(--line);padding:22px
+}
+.brand{font-size:28px;font-weight:800;margin-bottom:18px}
+.brand span{color:var(--gold)}
+.sidebar button{
+width:100%;text-align:left;margin-bottom:10px;
+background:rgba(255,255,255,.04);color:#fff
+}
+.sidebar button.active,.sidebar button:hover{
+background:var(--gold);color:#111
+}
+
+.main{margin-left:270px;padding:28px}
+.page{display:none}
+.page.active{display:block}
+
+.cards{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:16px
+}
+.card{
+background:var(--card);backdrop-filter:blur(12px);
+border:1px solid var(--line);padding:18px;border-radius:20px
+}
+.card h4{color:var(--muted);margin-bottom:8px}
+.card p{font-size:28px;font-weight:800}
+
+.panel{
+margin-top:22px;background:var(--card);
+border:1px solid var(--line);padding:20px;border-radius:22px
+}
+.top{
+display:flex;justify-content:space-between;align-items:center;
+gap:12px;flex-wrap:wrap;margin-bottom:15px
+}
+table{width:100%;border-collapse:collapse}
+th,td{
+padding:10px;border-bottom:1px solid var(--line);
+text-align:left;font-size:13px
+}
+th{color:var(--muted)}
+
+.modal{
+position:fixed;inset:0;background:rgba(0,0,0,.72);
+display:none;justify-content:center;align-items:center;padding:18px
+}
+.modal-box{
+width:100%;max-width:980px;max-height:92vh;overflow:auto;
+background:#111827;border:1px solid var(--line);
+padding:24px;border-radius:24px
+}
+.grid{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:12px
+}
+label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px}
+.actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+
+@media(max-width:900px){
+.sidebar{position:relative;width:100%;height:auto}
+.main{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login" id="loginPage">
+<div class="login-box">
+<h1>Global Base <span style="color:#d4af37">Finance</span></h1>
+<div class="small">Enterprise ERP</div>
+
+<input id="email" placeholder="Email" style="margin-top:10px">
+<input id="password" type="password" placeholder="Password" style="margin-top:10px">
+
+<button class="gold" style="width:100%;margin-top:12px" onclick="login()">Login</button>
+<div class="small" style="margin-top:12px;text-align:center">Made by ARK</div>
+</div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+
+<div class="sidebar">
+<div class="brand">GB <span>Finance</span></div>
+
+<button class="active" onclick="openPage(event,'dashboard')">Dashboard</button>
+<button onclick="openPage(event,'customer')">Customer Payment</button>
+<button onclick="openPage(event,'vendor')">Vendor Payment</button>
+<button onclick="openPage(event,'advance')">Vendor Advance</button>
+<button onclick="openPage(event,'deposit')">Customer Deposit</button>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="main">
+
+<!-- DASHBOARD -->
+<div class="page active" id="dashboard">
+<h1>Dashboard</h1>
+
+<div class="cards" style="margin-top:18px">
+<div class="card"><h4>Customer Due</h4><p id="d1">0</p></div>
+<div class="card"><h4>Vendor Payable</h4><p id="d2">0</p></div>
+<div class="card"><h4>Vendor Advance</h4><p id="d3">0</p></div>
+<div class="card"><h4>Customer Deposit</h4><p id="d4">0</p></div>
+</div>
+</div>
+
+<!-- CUSTOMER -->
+<div class="page" id="customer">
+<div class="panel">
+<div class="top">
+<h2>Customer Payment</h2>
+<button class="gold" onclick="openModal('mc')">+ Add</button>
+</div>
+<table>
+<thead>
+<tr>
+<th>Buyer</th><th>Vendor</th><th>PO</th><th>ETD</th><th>Doc Date</th><th>Due</th><th>Amt</th><th>Status</th><th>Action</th>
+</tr>
+</thead>
+<tbody id="customerBody"></tbody>
+</table>
+</div>
+</div>
+
+<!-- VENDOR -->
+<div class="page" id="vendor">
+<div class="panel">
+<div class="top">
+<h2>Vendor Payment</h2>
+<button class="gold" onclick="openModal('mv')">+ Add</button>
+</div>
+<table>
+<thead>
+<tr>
+<th>Vendor</th><th>Description</th><th>Amt</th><th>Stage</th><th>Status</th><th>Action</th>
+</tr>
+</thead>
+<tbody id="vendorBody"></tbody>
+</table>
+</div>
+</div>
+
+<!-- ADVANCE -->
+<div class="page" id="advance">
+<div class="panel">
+<div class="top">
+<h2>Vendor Advance</h2>
+<button class="gold" onclick="openModal('ma')">+ Add</button>
+</div>
+<table>
+<thead>
+<tr>
+<th>Vendor</th><th>PO</th><th>Date</th><th>Total</th><th>Used</th><th>Bal</th><th>Action</th>
+</tr>
+</thead>
+<tbody id="advanceBody"></tbody>
+</table>
+</div>
+</div>
+
+<!-- DEPOSIT -->
+<div class="page" id="deposit">
+<div class="panel">
+<div class="top">
+<h2>Customer Deposit</h2>
+<button class="gold" onclick="openModal('md')">+ Add</button>
+</div>
+<table>
+<thead>
+<tr>
+<th>Customer</th><th>PO</th><th>Date</th><th>Total</th><th>Used</th><th>Bal</th><th>Action</th>
+</tr>
+</thead>
+<tbody id="depositBody"></tbody>
+</table>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- MODALS -->
+<div class="modal" id="mc"><div class="modal-box">
+<h2>Customer Payment</h2>
+<div class="grid">
+<input id="cbuyer" placeholder="Buyer">
+<input id="cvendor" placeholder="Vendor">
+<input id="cpo" placeholder="PO">
+<input type="date" id="cetd">
+<input type="date" id="cdoc">
+<input id="camt" placeholder="Amount">
+</div>
+<div class="actions">
+<button class="dark" onclick="closeModal('mc')">Close</button>
+<button class="gold" onclick="saveCustomer()">Save</button>
+</div>
+</div></div>
+
+<div class="modal" id="mv"><div class="modal-box">
+<h2>Vendor Payment</h2>
+<div class="grid">
+<input id="vvendor" placeholder="Vendor">
+<input id="vdesc" placeholder="Description">
+<input id="vamt" placeholder="Amount">
+<select id="vstage">
+<option>Hold By Amj Sir</option>
+<option>Awaiting For The Payment Sheet From CA</option>
+<option>Awaiting for the Payment Sheet From Vendor</option>
+<option>Awaiting for the Singed Payment Sheet From Vendor</option>
+<option>Awaiting For the payment voucher from CA</option>
+<option>Awaiting for the payment TT Proof</option>
+</select>
+</div>
+<div class="actions">
+<button class="dark" onclick="closeModal('mv')">Close</button>
+<button class="gold" onclick="saveVendor()">Save</button>
+</div>
+</div></div>
+
+<div class="modal" id="ma"><div class="modal-box">
+<h2>Vendor Advance</h2>
+<div class="grid">
+<input id="avendor" placeholder="Vendor">
+<input id="apo" placeholder="PO">
+<input type="date" id="adate">
+<input id="atotal" placeholder="Amount">
+</div>
+<div class="actions">
+<button class="dark" onclick="closeModal('ma')">Close</button>
+<button class="gold" onclick="saveAdvance()">Save</button>
+</div>
+</div></div>
+
+<div class="modal" id="md"><div class="modal-box">
+<h2>Customer Deposit</h2>
+<div class="grid">
+<input id="dcust" placeholder="Customer">
+<input id="dpo" placeholder="PO">
+<input type="date" id="ddate">
+<input id="damt" placeholder="Amount">
+</div>
+<div class="actions">
+<button class="dark" onclick="closeModal('md')">Close</button>
+<button class="gold" onclick="saveDeposit()">Save</button>
+</div>
+</div></div>
+
+<script>
+let c=[],v=[],a=[],d=[];
+
+function login(){
+if((email.value==="admin@globalbase.com"&&password.value==="Admin@123")||
+(email.value==="finance@globalbase.com"&&password.value==="Finance@123")){
+loginPage.style.display="none";app.style.display="block";dash();
+}else alert("Invalid Login");
+}
+function logout(){location.reload();}
+function openPage(e,id){
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+document.querySelectorAll(".sidebar button").forEach(x=>x.classList.remove("active"));
+e.target.classList.add("active");
+}
+function openModal(id){document.getElementById(id).style.display="flex";}
+function closeModal(id){document.getElementById(id).style.display="none";}
+
+/* buyer rules */
+function getDays(name){
+name=name.toLowerCase();
+if(name.includes("uic")) return 15;
+if(name.includes("tjx")) return 120;
+if(name.includes("home")) return 120;
+if(name.includes("schou")) return 15;
+return 15;
+}
+
+/* customer */
+function saveCustomer(){
+let days=getDays(cbuyer.value);
+let dt=new Date(cdoc.value);
+dt.setDate(dt.getDate()+days);
+let due=dt.toISOString().split("T")[0];
+
+c.push({
+buyer:cbuyer.value,vendor:cvendor.value,po:cpo.value,
+etd:cetd.value,doc:cdoc.value,due:due,
+amt:Number(camt.value||0),status:"Pending"
+});
+renderCustomer();dash();closeModal("mc");
+}
+function renderCustomer(){
+customerBody.innerHTML="";
+c.forEach((x,i)=>{
+let cls=x.status=="Done"?"done":"pending";
+customerBody.innerHTML+=`
+<tr>
+<td>${x.buyer}</td><td>${x.vendor}</td><td>${x.po}</td>
+<td>${x.etd}</td><td>${x.doc}</td><td>${x.due}</td>
+<td>${x.amt}</td>
+<td><span class="badge ${cls}">${x.status}</span></td>
+<td>
+<button class="gold" onclick="markReceived(${i})">Done</button>
+<button class="red" onclick="delC(${i})">Delete</button>
+</td>
+</tr>`;
+});
+}
+function markReceived(i){c[i].status="Done";renderCustomer();dash();}
+function delC(i){c.splice(i,1);renderCustomer();dash();}
+
+/* vendor */
+function saveVendor(){
+v.push({
+vendor:vvendor.value,desc:vdesc.value,
+amt:Number(vamt.value||0),
+stage:vstage.value,status:"Pending"
+});
+renderVendor();dash();closeModal("mv");
+}
+function renderVendor(){
+vendorBody.innerHTML="";
+v.forEach((x,i)=>{
+let cls=x.status=="Done"?"done":"pending";
+vendorBody.innerHTML+=`
+<tr>
+<td>${x.vendor}</td><td>${x.desc}</td><td>${x.amt}</td>
+<td>${x.stage}</td>
+<td><span class="badge ${cls}">${x.status}</span></td>
+<td>
+<button class="gold" onclick="markPaid(${i})">Paid</button>
+<button class="red" onclick="delV(${i})">Delete</button>
+</td>
+</tr>`;
+});
+}
+function markPaid(i){v[i].status="Done";renderVendor();dash();}
+function delV(i){v.splice(i,1);renderVendor();dash();}
+
+/* advance */
+function saveAdvance(){
+a.push({
+vendor:avendor.value,po:apo.value,date:adate.value,
+total:Number(atotal.value||0),used:0,bal:Number(atotal.value||0)
+});
+renderAdvance();dash();closeModal("ma");
+}
+function renderAdvance(){
+advanceBody.innerHTML="";
+a.forEach((x,i)=>{
+advanceBody.innerHTML+=`
+<tr>
+<td>${x.vendor}</td><td>${x.po}</td><td>${x.date}</td>
+<td>${x.total}</td><td>${x.used}</td><td>${x.bal}</td>
+<td>
+<button class="gold" onclick="deductA(${i})">Deduct</button>
+<button class="red" onclick="delA(${i})">Delete</button>
+</td>
+</tr>`;
+});
+}
+function deductA(i){
+let m=Number(prompt("Deduct Amount")||0);
+a[i].used+=m;a[i].bal=a[i].total-a[i].used;
+renderAdvance();dash();
+}
+function delA(i){a.splice(i,1);renderAdvance();dash();}
+
+/* deposit */
+function saveDeposit(){
+d.push({
+cust:dcust.value,po:dpo.value,date:ddate.value,
+total:Number(damt.value||0),used:0,bal:Number(damt.value||0)
+});
+renderDeposit();dash();closeModal("md");
+}
+function renderDeposit(){
+depositBody.innerHTML="";
+d.forEach((x,i)=>{
+depositBody.innerHTML+=`
+<tr>
+<td>${x.cust}</td><td>${x.po}</td><td>${x.date}</td>
+<td>${x.total}</td><td>${x.used}</td><td>${x.bal}</td>
+<td>
+<button class="gold" onclick="adjD(${i})">Adjust</button>
+<button class="red" onclick="delD(${i})">Delete</button>
+</td>
+</tr>`;
+});
+}
+function adjD(i){
+let m=Number(prompt("Adjust Amount")||0);
+d[i].used+=m;d[i].bal=d[i].total-d[i].used;
+renderDeposit();dash();
+}
+function delD(i){d.splice(i,1);renderDeposit();dash();}
+
+/* dash */
+function dash(){
+d1.innerText=c.filter(x=>x.status!="Done").reduce((s,x)=>s+x.amt,0);
+d2.innerText=v.filter(x=>x.status!="Done").reduce((s,x)=>s+x.amt,0);
+d3.innerText=a.reduce((s,x)=>s+x.bal,0);
+d4.innerText=d.reduce((s,x)=>s+x.bal,0);
+}
+</script>
+</body>
+</html>

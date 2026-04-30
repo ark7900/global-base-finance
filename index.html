@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Global Base Finance V4 Enterprise</title>
+<title>Global Base Finance V5 Live</title>
 
 <style>
 :root{
@@ -117,7 +117,9 @@ font-weight:800;
 margin-bottom:18px;
 }
 
-.brand span{color:var(--gold);}
+.brand span{
+color:var(--gold);
+}
 
 .sidebar button{
 width:100%;
@@ -252,7 +254,7 @@ margin-left:0;
 <div class="login" id="loginPage">
 <div class="login-box">
 <h1>Global Base <span style="color:#d4af37">Finance</span></h1>
-<div class="small">Enterprise ERP</div>
+<div class="small">Enterprise ERP Live</div>
 
 <input id="email" placeholder="Email" style="margin-top:10px">
 <input id="password" type="password" placeholder="Password" style="margin-top:10px">
@@ -260,7 +262,7 @@ margin-left:0;
 <button class="gold" style="width:100%;margin-top:12px" onclick="login()">Login</button>
 
 <div class="small" style="margin-top:12px;text-align:center">
-Made by ARK
+Made by ARK + ChatGPT
 </div>
 </div>
 </div>
@@ -276,7 +278,7 @@ Made by ARK
 <button onclick="openPage(event,'vendor')">Vendor Payment</button>
 <button onclick="openPage(event,'advance')">Vendor Advance</button>
 <button onclick="openPage(event,'deposit')">Customer Deposit</button>
-<button onclick="backupExcel()">Backup</button>
+<button onclick="backupExcel()">Backup Excel</button>
 <button onclick="logout()">Logout</button>
 </div>
 
@@ -287,10 +289,10 @@ Made by ARK
 <h1>Dashboard</h1>
 
 <div class="cards" style="margin-top:18px">
-<div class="card"><h4>Customer Due</h4><p id="d1">0</p></div>
-<div class="card"><h4>Vendor Payable</h4><p id="d2">0</p></div>
-<div class="card"><h4>Vendor Advance</h4><p id="d3">0</p></div>
-<div class="card"><h4>Customer Deposit</h4><p id="d4">0</p></div>
+<div class="card"><h4>Customer Due</h4><p id="d1">$0</p></div>
+<div class="card"><h4>Vendor Payable</h4><p id="d2">$0</p></div>
+<div class="card"><h4>Vendor Advance</h4><p id="d3">$0</p></div>
+<div class="card"><h4>Customer Deposit</h4><p id="d4">$0</p></div>
 </div>
 </div>
 
@@ -301,10 +303,19 @@ Made by ARK
 <h2>Customer Payment</h2>
 <button class="gold" onclick="openModal('mc')">+ Add</button>
 </div>
+
 <table>
 <thead>
 <tr>
-<th>Buyer</th><th>Vendor</th><th>PO</th><th>ETD</th><th>Doc</th><th>Due</th><th>Amt</th><th>Status</th><th>Action</th>
+<th>Buyer</th>
+<th>Vendor</th>
+<th>PO</th>
+<th>ETD</th>
+<th>Doc</th>
+<th>Due</th>
+<th>Amt</th>
+<th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="customerBody"></tbody>
@@ -319,10 +330,16 @@ Made by ARK
 <h2>Vendor Payment</h2>
 <button class="gold" onclick="openModal('mv')">+ Add</button>
 </div>
+
 <table>
 <thead>
 <tr>
-<th>Vendor</th><th>Description</th><th>Amt</th><th>Stage</th><th>Status</th><th>Action</th>
+<th>Vendor</th>
+<th>Description</th>
+<th>Amt</th>
+<th>Stage</th>
+<th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="vendorBody"></tbody>
@@ -337,10 +354,17 @@ Made by ARK
 <h2>Vendor Advance</h2>
 <button class="gold" onclick="openModal('ma')">+ Add</button>
 </div>
+
 <table>
 <thead>
 <tr>
-<th>Vendor</th><th>PO</th><th>Date</th><th>Total</th><th>Used</th><th>Bal</th><th>Action</th>
+<th>Vendor</th>
+<th>PO</th>
+<th>Date</th>
+<th>Total</th>
+<th>Used</th>
+<th>Bal</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="advanceBody"></tbody>
@@ -355,10 +379,17 @@ Made by ARK
 <h2>Customer Deposit</h2>
 <button class="gold" onclick="openModal('md')">+ Add</button>
 </div>
+
 <table>
 <thead>
 <tr>
-<th>Customer</th><th>PO</th><th>Date</th><th>Total</th><th>Used</th><th>Bal</th><th>Action</th>
+<th>Customer</th>
+<th>PO</th>
+<th>Date</th>
+<th>Total</th>
+<th>Used</th>
+<th>Bal</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="depositBody"></tbody>
@@ -369,9 +400,11 @@ Made by ARK
 </div>
 </div>
 
-<!-- MODALS -->
-<div class="modal" id="mc"><div class="modal-box">
+<!-- CUSTOMER MODAL -->
+<div class="modal" id="mc">
+<div class="modal-box">
 <h2>Customer Payment</h2>
+
 <div class="grid">
 <input id="cbuyer" placeholder="Buyer">
 <input id="cvendor" placeholder="Vendor">
@@ -380,81 +413,83 @@ Made by ARK
 <input type="date" id="cdoc">
 <input id="camt" placeholder="Amount">
 </div>
+
 <div class="actions">
 <button class="dark" onclick="closeModal('mc')">Close</button>
 <button class="gold" onclick="saveCustomer()">Save</button>
 </div>
-</div></div>
+</div>
+</div>
 
-<div class="modal" id="mv"><div class="modal-box">
+<!-- VENDOR MODAL -->
+<div class="modal" id="mv">
+<div class="modal-box">
 <h2>Vendor Payment</h2>
+
 <div class="grid">
 <input id="vvendor" placeholder="Vendor">
 <input id="vdesc" placeholder="Description">
 <input id="vamt" placeholder="Amount">
+
 <select id="vstage">
 <option>Hold By AMJ Sir</option>
-<option>Awaiting For The Payment Sheet From CA</option>
-<option>Awaiting For The Payment Sheet From Vendor</option>
-<option>Awaiting Signed Payment Sheet</option>
-<option>Awaiting For The Payment Voucher From CA</option>
+<option>Awaiting CA Sheet</option>
+<option>Awaiting Vendor Sheet</option>
+<option>Awaiting Signed Sheet</option>
+<option>Awaiting Voucher</option>
 <option>Awaiting TT Proof</option>
-<option>Done</option>
 </select>
 </div>
+
 <div class="actions">
 <button class="dark" onclick="closeModal('mv')">Close</button>
 <button class="gold" onclick="saveVendor()">Save</button>
 </div>
-</div></div>
+</div>
+</div>
 
-<div class="modal" id="ma"><div class="modal-box">
+<!-- ADVANCE MODAL -->
+<div class="modal" id="ma">
+<div class="modal-box">
 <h2>Vendor Advance</h2>
+
 <div class="grid">
 <input id="avendor" placeholder="Vendor">
 <input id="apo" placeholder="PO">
 <input type="date" id="adate">
 <input id="atotal" placeholder="Amount">
 </div>
+
 <div class="actions">
 <button class="dark" onclick="closeModal('ma')">Close</button>
 <button class="gold" onclick="saveAdvance()">Save</button>
 </div>
-</div></div>
+</div>
+</div>
 
-<div class="modal" id="md"><div class="modal-box">
+<!-- DEPOSIT MODAL -->
+<div class="modal" id="md">
+<div class="modal-box">
 <h2>Customer Deposit</h2>
+
 <div class="grid">
 <input id="dcust" placeholder="Customer">
 <input id="dpo" placeholder="PO">
 <input type="date" id="ddate">
 <input id="damt" placeholder="Amount">
 </div>
+
 <div class="actions">
 <button class="dark" onclick="closeModal('md')">Close</button>
 <button class="gold" onclick="saveDeposit()">Save</button>
 </div>
-</div></div>
+</div>
+</div>
 
 <script>
+const API_URL="https://script.google.com/macros/s/AKfycbzh8BMHX-GWZmmgBi-whaYVJkhZzMOec5KcwEIewtY440qk0KxZM0LivHQohawtabeOIQ/exec";
+
 let c=[],v=[],a=[],d=[];
-
-/* SAVE STORAGE */
-function saveLocal(){
-localStorage.setItem("gb_finance_data",JSON.stringify({c,v,a,d}));
-}
-
-/* LOAD STORAGE */
-function loadLocal(){
-let data=localStorage.getItem("gb_finance_data");
-if(data){
-let x=JSON.parse(data);
-c=x.c||[];
-v=x.v||[];
-a=x.a||[];
-d=x.d||[];
-}
-}
 
 /* LOGIN */
 function login(){
@@ -464,9 +499,8 @@ if(
 ){
 loginPage.style.display="none";
 app.style.display="block";
-loadLocal();
-renderAll();
-dash();
+loadData();
+setInterval(loadData,10000);
 }else{
 alert("Invalid Login");
 }
@@ -478,15 +512,26 @@ location.reload();
 
 /* PAGE */
 function openPage(e,id){
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
 document.getElementById(id).classList.add("active");
-document.querySelectorAll(".sidebar button").forEach(b=>b.classList.remove("active"));
+
+document.querySelectorAll(".sidebar button").forEach(x=>x.classList.remove("active"));
 e.target.classList.add("active");
 }
 
 /* MODAL */
-function openModal(id){document.getElementById(id).style.display="flex";}
-function closeModal(id){document.getElementById(id).style.display="none";}
+function openModal(id){
+document.getElementById(id).style.display="flex";
+}
+
+function closeModal(id){
+document.getElementById(id).style.display="none";
+}
+
+/* FORMAT */
+function usd(n){
+return "$"+Number(n||0).toLocaleString();
+}
 
 /* RULE */
 function getDays(name){
@@ -496,10 +541,33 @@ if(name.includes("home")) return 120;
 return 15;
 }
 
+/* GOOGLE SHEET SAVE */
+function saveCloud(){
+fetch(API_URL,{
+method:"POST",
+body:JSON.stringify({c,v,a,d})
+});
+}
+
+/* GOOGLE SHEET LOAD */
+async function loadData(){
+let res=await fetch(API_URL);
+let data=await res.json();
+
+c=data.c||[];
+v=data.v||[];
+a=data.a||[];
+d=data.d||[];
+
+renderAll();
+dash();
+}
+
 /* CUSTOMER */
 function saveCustomer(){
+
 let days=getDays(cbuyer.value);
-let dt=new Date(cdoc.value || new Date());
+let dt=new Date(cdoc.value||new Date());
 dt.setDate(dt.getDate()+days);
 let due=dt.toISOString().split("T")[0];
 
@@ -514,7 +582,7 @@ amt:Number(camt.value||0),
 status:"Pending"
 });
 
-saveLocal();
+saveCloud();
 renderCustomer();
 dash();
 closeModal("mc");
@@ -522,8 +590,10 @@ closeModal("mc");
 
 function renderCustomer(){
 customerBody.innerHTML="";
+
 c.forEach((x,i)=>{
-let cls=x.status==="Done"?"done":"pending";
+let cls=x.status=="Done"?"done":"pending";
+
 customerBody.innerHTML+=`
 <tr>
 <td>${x.buyer}</td>
@@ -532,7 +602,7 @@ customerBody.innerHTML+=`
 <td>${x.etd}</td>
 <td>${x.doc}</td>
 <td>${x.due}</td>
-<td>${x.amt}</td>
+<td>${usd(x.amt)}</td>
 <td><span class="badge ${cls}">${x.status}</span></td>
 <td>
 <button class="gold" onclick="markReceived(${i})">Done</button>
@@ -542,11 +612,23 @@ customerBody.innerHTML+=`
 });
 }
 
-function markReceived(i){c[i].status="Done";saveLocal();renderCustomer();dash();}
-function delC(i){c.splice(i,1);saveLocal();renderCustomer();dash();}
+function markReceived(i){
+c[i].status="Done";
+saveCloud();
+renderCustomer();
+dash();
+}
+
+function delC(i){
+c.splice(i,1);
+saveCloud();
+renderCustomer();
+dash();
+}
 
 /* VENDOR */
 function saveVendor(){
+
 v.push({
 vendor:vvendor.value,
 desc:vdesc.value,
@@ -554,7 +636,8 @@ amt:Number(vamt.value||0),
 stage:vstage.value,
 status:"Pending"
 });
-saveLocal();
+
+saveCloud();
 renderVendor();
 dash();
 closeModal("mv");
@@ -562,13 +645,15 @@ closeModal("mv");
 
 function renderVendor(){
 vendorBody.innerHTML="";
+
 v.forEach((x,i)=>{
-let cls=x.status==="Done"?"done":"pending";
+let cls=x.status=="Done"?"done":"pending";
+
 vendorBody.innerHTML+=`
 <tr>
 <td>${x.vendor}</td>
 <td>${x.desc}</td>
-<td>${x.amt}</td>
+<td>${usd(x.amt)}</td>
 <td>${x.stage}</td>
 <td><span class="badge ${cls}">${x.status}</span></td>
 <td>
@@ -579,11 +664,23 @@ vendorBody.innerHTML+=`
 });
 }
 
-function markPaid(i){v[i].status="Done";saveLocal();renderVendor();dash();}
-function delV(i){v.splice(i,1);saveLocal();renderVendor();dash();}
+function markPaid(i){
+v[i].status="Done";
+saveCloud();
+renderVendor();
+dash();
+}
+
+function delV(i){
+v.splice(i,1);
+saveCloud();
+renderVendor();
+dash();
+}
 
 /* ADVANCE */
 function saveAdvance(){
+
 a.push({
 vendor:avendor.value,
 po:apo.value,
@@ -592,7 +689,8 @@ total:Number(atotal.value||0),
 used:0,
 bal:Number(atotal.value||0)
 });
-saveLocal();
+
+saveCloud();
 renderAdvance();
 dash();
 closeModal("ma");
@@ -600,15 +698,16 @@ closeModal("ma");
 
 function renderAdvance(){
 advanceBody.innerHTML="";
+
 a.forEach((x,i)=>{
 advanceBody.innerHTML+=`
 <tr>
 <td>${x.vendor}</td>
 <td>${x.po}</td>
 <td>${x.date}</td>
-<td>${x.total}</td>
-<td>${x.used}</td>
-<td>${x.bal}</td>
+<td>${usd(x.total)}</td>
+<td>${usd(x.used)}</td>
+<td>${usd(x.bal)}</td>
 <td>
 <button class="gold" onclick="deductA(${i})">Deduct</button>
 <button class="red" onclick="delA(${i})">Delete</button>
@@ -621,15 +720,22 @@ function deductA(i){
 let m=Number(prompt("Deduct Amount")||0);
 a[i].used+=m;
 a[i].bal=a[i].total-a[i].used;
-saveLocal();
+
+saveCloud();
 renderAdvance();
 dash();
 }
 
-function delA(i){a.splice(i,1);saveLocal();renderAdvance();dash();}
+function delA(i){
+a.splice(i,1);
+saveCloud();
+renderAdvance();
+dash();
+}
 
 /* DEPOSIT */
 function saveDeposit(){
+
 d.push({
 cust:dcust.value,
 po:dpo.value,
@@ -638,7 +744,8 @@ total:Number(damt.value||0),
 used:0,
 bal:Number(damt.value||0)
 });
-saveLocal();
+
+saveCloud();
 renderDeposit();
 dash();
 closeModal("md");
@@ -646,15 +753,16 @@ closeModal("md");
 
 function renderDeposit(){
 depositBody.innerHTML="";
+
 d.forEach((x,i)=>{
 depositBody.innerHTML+=`
 <tr>
 <td>${x.cust}</td>
 <td>${x.po}</td>
 <td>${x.date}</td>
-<td>${x.total}</td>
-<td>${x.used}</td>
-<td>${x.bal}</td>
+<td>${usd(x.total)}</td>
+<td>${usd(x.used)}</td>
+<td>${usd(x.bal)}</td>
 <td>
 <button class="gold" onclick="adjD(${i})">Adjust</button>
 <button class="red" onclick="delD(${i})">Delete</button>
@@ -667,22 +775,27 @@ function adjD(i){
 let m=Number(prompt("Adjust Amount")||0);
 d[i].used+=m;
 d[i].bal=d[i].total-d[i].used;
-saveLocal();
+
+saveCloud();
 renderDeposit();
 dash();
 }
 
-function delD(i){d.splice(i,1);saveLocal();renderDeposit();dash();}
-
-/* DASH */
-function dash(){
-d1.innerText=c.filter(x=>x.status!="Done").reduce((s,x)=>s+x.amt,0);
-d2.innerText=v.filter(x=>x.status!="Done").reduce((s,x)=>s+x.amt,0);
-d3.innerText=a.reduce((s,x)=>s+x.bal,0);
-d4.innerText=d.reduce((s,x)=>s+x.bal,0);
+function delD(i){
+d.splice(i,1);
+saveCloud();
+renderDeposit();
+dash();
 }
 
-/* RENDER ALL */
+/* DASHBOARD */
+function dash(){
+d1.innerText=usd(c.filter(x=>x.status!="Done").reduce((s,x)=>s+x.amt,0));
+d2.innerText=usd(v.filter(x=>x.status!="Done").reduce((s,x)=>s+x.amt,0));
+d3.innerText=usd(a.reduce((s,x)=>s+x.bal,0));
+d4.innerText=usd(d.reduce((s,x)=>s+x.bal,0));
+}
+
 function renderAll(){
 renderCustomer();
 renderVendor();
@@ -690,22 +803,20 @@ renderAdvance();
 renderDeposit();
 }
 
-/* BACKUP EXCEL CSV */
+/* BACKUP */
 function backupExcel(){
 
-let rows = [
-["Type","Name1","Name2","PO","Date","Amount","Status"]
-];
+let rows=[["Type","Name1","Name2","PO","Date","Amount","Status"]];
 
 c.forEach(x=>rows.push(["Customer",x.buyer,x.vendor,x.po,x.doc,x.amt,x.status]));
 v.forEach(x=>rows.push(["Vendor",x.vendor,x.desc,"","",x.amt,x.status]));
 a.forEach(x=>rows.push(["Advance",x.vendor,"",x.po,x.date,x.bal,""]));
 d.forEach(x=>rows.push(["Deposit",x.cust,"",x.po,x.date,x.bal,""]));
 
-let csv = rows.map(r=>r.join(",")).join("\n");
+let csv=rows.map(r=>r.join(",")).join("\n");
 
-let blob = new Blob([csv],{type:"text/csv"});
-let url = URL.createObjectURL(blob);
+let blob=new Blob([csv],{type:"text/csv"});
+let url=URL.createObjectURL(blob);
 
 let aTag=document.createElement("a");
 aTag.href=url;
